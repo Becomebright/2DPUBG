@@ -1,16 +1,21 @@
 package MySocket;
 
+import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.Socket;
+
 import com.alibaba.fastjson.JSON;
 
 import yy1020.Bullet;
+import yy1020.Circle;
 import yy1020.Dsz;
+import yy1020.Poi;
 import yy1020.UpdateThread;
 import yy1020.mainFrame;
-
-import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Timer;
 
 public class Client extends Socket {
     private static final String Server_IP = "123.206.27.121"; // ·þÎñ¶ËIP
@@ -79,15 +84,12 @@ public class Client extends Socket {
             try {
                 this.reader = new BufferedReader(new InputStreamReader(client.getInputStream(), "UTF-8"));
                 while(true){
+                	//½ÓÊÕµ½·þÎñ¶ËÏûÏ¢ reply
                     String reply = reader.readLine();
-              
-//                    System.out.println("reply: " + reply);
                     
-//                    System.out.println("@@@kind: " + reply.substring(30, 31) + reply.substring(30, 31).equals("2"));
-                    
-                    //BulletÏûÏ¢
+                    //BulletÏûÏ¢, kind = 2
                     if(reply.substring(30, 31).equals("2")){
-                    	System.out.println("Bullet");
+//                    	System.out.println("Bullet");
                     	MsgBullet tmp = JSON.parseObject(reply, MsgBullet.class);
                     	// Ö»½ÓÊÕÆäËü¿Í»§¶Ë·¢À´µÄÏûÏ¢
                     	if(tmp.getPort() == UpdateThread.dsz0.getPort()) continue;
@@ -95,18 +97,58 @@ public class Client extends Socket {
                     	Thread thb=new Thread(mainFrame.dsz1.bullet[tmp.getId()]);
                     	thb.start();
                     	System.out.println("Bu " + "¡¾" + tmp.getX() + "," + tmp.getY() + "¡¿");
+<<<<<<< HEAD
                     }
-                    //CharacterÏûÏ¢
+                    
+                    //PoiÏûÏ¢, kind = 3
+                    else if(reply.substring(9, 10).equals("3")){
+                    	System.out.println("##¿ªÊ¼ËõÐ¡¶¾È¦£¡£¡##");
+                    	
+//                    	List<Poi> pointList = JSON.parseArray(reply, Poi.class);
+//                    	Poi[] pointArray = new Poi[6];
+//                    	pointList.toArray(pointArray);
+//                    	
+//                    	Circle circle = new Circle();
+//                    	circle.setPoint(pointArray);
+//        				Thread thcir = new Thread(circle);
+//        				thcir.start();
+=======
+>>>>>>> parent of e76671c... 18ï¼š17
+                    }
+                    
+                    //CharacterÏûÏ¢, kind = 1
                     else{
 //                    	System.out.println("Character");
                     	MsgCharacter tmp = JSON.parseObject(reply, MsgCharacter.class);
                     	if(tmp == null) System.out.println("MsgCharacter Fuck");
-                    	// Ö»½ÓÊÕÆäËü¿Í»§¶Ë·¢À´µÄÏûÏ¢
-                    	if(tmp.getPort() == UpdateThread.dsz0.getPort()) continue;
-                    	mainFrame.dsz1.fromMsg(tmp);
-//                        System.out.println( "Ch" + " ¡¾" + mainFrame.dsz1.x + ", " + mainFrame.dsz1.y + "¡¿");
+                    	else{
+                    		// Ö»½ÓÊÕÆäËü¿Í»§¶Ë·¢À´µÄÏûÏ¢
+                        	if(tmp.getPort() == UpdateThread.dsz0.getPort()) continue;
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        	
+                        	
+                        	/**ÐèÒªÐÞ¸Ä**/
+                        	for(Dsz dsz : mainFrame.dsz1){
+                        		if(dsz.getPort() == 0){
+                        			dsz.setPort(tmp.getPort());
+                        			dsz.fromMsg(tmp);
+                        			break;
+                        		}
+                        		if(dsz.getPort() == tmp.getPort()){
+                        			dsz.fromMsg(tmp);
+                        			break;
+                        		}
+                        	}	
+=======
+                        	mainFrame.dsz1.fromMsg(tmp);
+>>>>>>> parent of e76671c... 18ï¼š17
+=======
+                        	mainFrame.dsz1.fromMsg(tmp);
+>>>>>>> parent of e76671c... 18ï¼š17
+//                            System.out.println( "Ch" + " ¡¾" + mainFrame.dsz1.x + ", " + mainFrame.dsz1.y + "¡¿");
+                    	}
                     }
-                   
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -122,18 +164,4 @@ public class Client extends Socket {
             }
         }
     }
-
-    /**
-     * Èë¿Ú
-     * @param args
-     */
-//    public static void main(String[] args) {
-//        try {
-//            Client client = new Client(); // Æô¶¯¿Í»§¶Ë
-////            MoveMsg msg = new MoveMsg(10, 10);
-//            client.load();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

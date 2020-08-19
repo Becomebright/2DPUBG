@@ -92,18 +92,31 @@ public class Bullet implements Runnable{
             default:
                 break;
             }
-            if(tag==1&&mainFrame.dsz1.islive==true&&mainFrame.dsz1.getI()+1==getI()&&mainFrame.dsz1.getJ()==getJ()) {
+            /*if(tag==1&&mainFrame.dsz1.islive==true&&mainFrame.dsz1.getI()+1==getI()&&mainFrame.dsz1.getJ()==getJ()) {
             	mainFrame.dsz1.health-=10;
             	isLive = false;
                 break;
+            }*/
+            for(int i=0;i<=3;i++) {
+            	 if(tag==1&&mainFrame.dsz1[i].islive==true&&mainFrame.dsz1[i].x<=x+15&&mainFrame.dsz1[i].y<=y+25&&mainFrame.dsz1[i].x>=x-45&&mainFrame.dsz1[i].y>=y-25) {
+            		 mainFrame.dsz1[i].health-=1;
+            		 isLive = false;
+            		 break;
+            	 }
             }
+           
             if(tag==2) {
             		if(isLive==true) {
-            			if(getI()==Player.getI()&&getJ()==Player.getJ()) {
-            				Player.health.de(1.0);
+            			if(x+25>=Player.x+25&&y+25>=Player.y&&x-25<=Player.x&&y-25<=Player.y) {
+            				Player.health.de(2.0);
             				isLive=false;
             				break;
             			}
+            			/*if(getI()==Player.getI()&&getJ()==Player.getJ()) {
+            				Player.health.de(1.0);
+            				isLive=false;
+            				break;
+            			}*/
             		}
             }
 //          System.out.println(""+x+" "+y);

@@ -40,8 +40,14 @@ public class Endpanel extends JPanel implements gameConfig{
 		super.paint(g);
 		ImageIcon bg=new ImageIcon("img\\endbg.jpg");
 		g.drawImage(bg.getImage(), 0, 0, frameX, frameY, null);
-		ImageIcon gg=new ImageIcon("img\\gameover.png");
-		g.drawImage(gg.getImage(), 230,200, 500, 200, null);
+		if(mainFrame.tag==3) {
+			ImageIcon gg=new ImageIcon("img\\gameover.png");
+			g.drawImage(gg.getImage(), 230,200, 500, 200, null);
+		}
+		else {
+			ImageIcon gg=new ImageIcon("img\\win.png");
+			g.drawImage(gg.getImage(), 230,200, 500, 200, null);
+		}
 		buttonpanel=new JPanel();
 		buttonpanel.setLayout(null);
 		buttonpanel.setBounds(230, 500, 500, 200);

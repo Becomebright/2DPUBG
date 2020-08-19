@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<npc201>
+	<name>逗逼</name>
+	<hp>20</hp>
+	<level>2</level>
+	<exp>10</exp>
+	<money>10</money>
+	<islive>1</islive>
+	<talk>我是大傻逼,哈哈哈哈</talk>
+</npc201>

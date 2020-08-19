@@ -33,7 +33,8 @@ public class mainFrame extends JFrame implements gameConfig{
 	JPanel tpanel;
 	
 	Endpanel epanel;
-	public static Dsz dsz1;
+	//public static Dsz dsz1;
+	public static Dsz dsz1[]=new Dsz[4];
 	public static int bnum = 0;
 	public mainFrame() {
 		init();
@@ -74,7 +75,10 @@ public class mainFrame extends JFrame implements gameConfig{
 		ut.start();
 		
 		//启动其他玩家类
-		dsz1=new Dsz(375,375,0);
+		for(int i=0;i<=3;i++) {
+			dsz1[i]=new Dsz(375,375,0);
+		}
+		//dsz1=new Dsz(375,375,0);
 		//Thread thdsz1=new Thread(dsz1);
 		//thdsz1.start();
 	}
@@ -293,9 +297,12 @@ public class mainFrame extends JFrame implements gameConfig{
 			}
 			
 			Player.health.paint(g);
-			if(dsz1!=null&&dsz1.islive==true) {
-				dsz1.paint(g);
+			for(int i=0;i<=3;i++) {
+				if(dsz1[i]!=null&&dsz1[i].islive==true) {
+					dsz1[i].paint(g);
+				}
 			}
+			
 			/*if(UpdateThread.dsz0!=null&&(UpdateThread.dsz0.islive==true)) {
 				UpdateThread.dsz0.paint(g);
 			}*/

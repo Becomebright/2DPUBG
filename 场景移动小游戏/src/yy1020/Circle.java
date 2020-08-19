@@ -15,7 +15,7 @@ public class Circle implements Runnable{
 	private final double MINUTE = 60000.0;
 	private final int MIN = 60000;
 	public int cnt = 0, Time = 0;
-	Poi point[];
+	private Poi point[];
 	/*
 	 * 6500 * 2 = 13000
 	 * 4400 * 2 = 8800
@@ -23,39 +23,10 @@ public class Circle implements Runnable{
 	 * 300 * 2 = 600
 	 */
 
-	public void randCircle() {
-		point = new Poi[CNT];
-		int Radius, Left, Right, Up, Down;
-		Left = Up = 0;
-		Right = Down = N;
-		point[0] = new Poi(N / 2, N / 2);
-		for(int i = 1; i < CNT; ++i) {
-			Radius = RADIUS[i];
-			Left = Left + Radius;
-			Right = Right - Radius;
-			
-			Up += Radius;
-			Down -= Radius;
-			if(Left > Right || Up > Down) while(true) {
-				System.out.printf("%d %d %d %d\n", Left, Right, Up, Down);
-			}
-			Random rd = new Random();
-			point[i] = new Poi(rd.nextInt(Right - Left + 1) + Left, rd.nextInt(Down - Up + 1) + Up);
-			Left = (int) (point[i].x - Radius);
-			Right = (int) (point[i].x + Radius);
-			Up = (int) (point[i].y - Radius);
-			Down = (int) (point[i].y + Radius);
-			//System.out.printf("%d %d %d %d\n\n", Left, Right, Up, Down);
-		}
-//		for(int i = 0; i < CNT; ++i) {
-//			System.out.printf("%f %f %d\n", point[i].x, point[i].y, RADIUS[i]);
-//			try {
-//				sleep(2000);
-//			} catch (Exception e) {
-//				//TESTING@@@@@@@@@@@@@@@@@@@@@@@
-//			}
-//		}
+	public void setPoint(Poi[] point) {
+		this.point = point;
 	}
+	
 	public void solve() {
 //		ReadMapFile.map1[0][0] = 4;
 //		ReadMapFile.map1[0][0] = 4;

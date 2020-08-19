@@ -18,6 +18,9 @@ public class Background implements Runnable{
 			if(Player.health.h<0) {
 				mainFrame.tag=3;
 			}
+			else if(mainFrame.dsz1[0].islive==false) {
+				mainFrame.tag=4;
+			}
 		}
 	}
 }

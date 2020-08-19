@@ -2,28 +2,79 @@ package MySocket;
 
 import com.alibaba.fastjson.JSON;
 import yy1020.Dsz;
+import yy1020.Poi;
 import yy1020.mainFrame;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.*;
 
 public class Server extends ServerSocket {
     private static final int Server_Port = 610;
 
-    //定义一个容量为5的线程池
+    //定义一个容量为50的线程池
     private static ExecutorService service = Executors.newFixedThreadPool(50);
 
     private static CopyOnWriteArrayList<String> userList = new CopyOnWriteArrayList<String>();
     private static CopyOnWriteArrayList<Task> threadList =  new CopyOnWriteArrayList<Task>();
     private static BlockingQueue<String> msgQueue = new ArrayBlockingQueue<String>(50);
+    
+    private Poi[] point; //毒圈中心
+    private int clientNumber = 4; //游戏人数
+    
 
     public Server() throws IOException {
         super(Server_Port);
+        point = new Poi[6];
+        randCircle();
     }
+    
+    /**
+     * 随机生成毒圈
+     */
+    private void randCircle() {
+    	final int N = 3500, N1 = 1700, N2 = 1200, N3 = 800, N4 = 200, N5 = 50,
+    			RADIUS[] = new int[]{2200, N1, N2, N3, N4, N5};
+    	final int CNT = 6;
+    	
+		point = new Poi[CNT];
+		int Radius, Left, Right, Up, Down;
+		Left = Up = 0;
+		Right = Down = N;
+		point[0] = new Poi(N / 2, N / 2);
+		for(int i = 1; i < CNT; ++i) {
+			Radius = RADIUS[i];
+			Left = Left + Radius;
+			Right = Right - Radius;
+			
+			Up += Radius;
+			Down -= Radius;
+			if(Left > Right || Up > Down) while(true) {
+				System.out.printf("%d %d %d %d\n", Left, Right, Up, Down);
+			}
+			Random rd = new Random();
+			point[i] = new Poi(rd.nextInt(Right - Left + 1) + Left, rd.nextInt(Down - Up + 1) + Up);
+			Left = (int) (point[i].x - Radius);
+			Right = (int) (point[i].x + Radius);
+			Up = (int) (point[i].y - Radius);
+			Down = (int) (point[i].y + Radius);
+			//System.out.printf("%d %d %d %d\n\n", Left, Right, Up, Down);
+		}
+//		for(int i = 0; i < CNT; ++i) {
+//			System.out.printf("%f %f %d\n", point[i].x, point[i].y, RADIUS[i]);
+//			try {
+//				sleep(2000);
+//			} catch (Exception e) {
+//				//TESTING@@@@@@@@@@@@@@@@@@@@@@@
+//			}
+//		}
+	}    
 
     /**
      * 启动向客户端发送消息的线程，使用线程处理每个客户端发来的消息
@@ -81,6 +132,9 @@ public class Server extends ServerSocket {
         private Writer writer;
         private String userName;
         private int port;
+        
+        private boolean hasSentCircle = false; //是否已经发送过毒圈消息
+        
 
         /**
          * 构造函数<br>
@@ -99,19 +153,30 @@ public class Server extends ServerSocket {
             }
             userList.add(this.userName);
             threadList.add(this);
-//            pushMsg("【" + this.userName + "进入了游戏】");
             System.out.println("Form Client[port:" + socket.getPort() + "] "
                     + this.userName + "进入了游戏");
+            
+            // 当所有人都进入游戏后，发送毒圈信息
+            if(!hasSentCircle && userList.size() == clientNumber){
+            	String circleMsg = JSON.toJSONString(point);
+            	pushMsg(circleMsg);
+            	hasSentCircle = true;
+            }
         }
 
         @Override
         public void run() {
             try {
+            	
                 while(true){
                     String msg = reader.readLine();
                     if(msg==null) System.out.println("Server.Task.run.msg Fuck");
-                    System.out.println(msg);
-                    pushMsg(msg);
+                    else {
+                    	Date day = new Date();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");                  
+                        System.out.println(dateFormat.format(day) + msg);
+                        pushMsg(msg);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

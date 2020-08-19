@@ -46,15 +46,7 @@ public class test {
 				ReadMapFile.readfile("map1.map");
 				//用读到的地图数组创建游戏窗体，开始游戏
 				mf = new mainFrame();
-				Circle circle = new Circle();
-				circle.randCircle();
-//				try {
-//					sleep(200000);
-//				} catch (Exception e) {
-//					//TESTING@@@@@@@@@@@@@@@@@@@@@@@
-//				}
-				Thread thcir = new Thread(circle);
-				thcir.start();
+				
 				Background bg = new Background();
 				Thread thbg = new  Thread(bg);
 				thbg.start();

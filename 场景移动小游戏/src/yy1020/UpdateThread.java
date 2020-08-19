@@ -51,9 +51,9 @@ public class UpdateThread extends Thread{
 			}else if(mainFrame.tag==2){//如果是在对话的状态就刷新对话框面板
 				tpanel.repaint();
 			}
-			else if(mainFrame.tag==3) {
+			else if(mainFrame.tag==3||mainFrame.tag==4) {
 				endpanel.setVisible(true);
-				//endpanel.repaint();
+				endpanel.repaint();
 				panel.setVisible(false);
 				//System.out.println("tag==3!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				//endpanel.updateUI();
